@@ -13,41 +13,46 @@ const PublishedEventCard: React.FC<PublishedEventCardProperties> = ({
   publishedEvent,
 }) => {
   return (
-    <Link to={`/events/${publishedEvent.id}`}>
-      <Card className="py-0 overflow-hidden max-w-[240px] gap-2">
+    <Link to={`/events/${publishedEvent.id}`} className="group block h-full">
+      <Card className="h-full overflow-hidden gap-0 border-slate-200 bg-white py-0 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
         {/* Card Image */}
-        <div className="h-[140px]">
+        <div className="h-[150px] overflow-hidden bg-slate-100 dark:bg-slate-800">
           <RandomEventImage />
         </div>
-        <div className="px-2">
-          <h3 className="text-lg font-medium">{publishedEvent.name}</h3>
+        <div className="space-y-3 p-4">
+          <h3 className="line-clamp-2 text-base font-semibold text-slate-950 group-hover:text-primary dark:text-slate-50">
+            {publishedEvent.name}
+          </h3>
+          <div className="space-y-2">
+            <div className="flex gap-2 text-sm text-slate-600 dark:text-slate-300">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+              <span className="line-clamp-1">{publishedEvent.venue}</span>
+            </div>
+            <div className="flex gap-2 text-sm text-slate-600 dark:text-slate-300">
+              {publishedEvent.start && publishedEvent.end ? (
+                <div className="flex gap-2">
+                  <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />{" "}
+                  <span>
+                    {format(publishedEvent.start, "PP")} -{" "}
+                    {format(publishedEvent.end, "PP")}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+                  Dates TBD
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="px-2">
-          <div className="flex gap-2 text-sm mb-2 text-gray-500">
-            <MapPin className="w-5" /> {publishedEvent.venue}
-          </div>
-          <div className="flex gap-2 text-sm mb-2 text-gray-500">
-            {publishedEvent.start && publishedEvent.end ? (
-              <div className="flex gap-2">
-                <Calendar className="w-5" />{" "}
-                {format(publishedEvent.start, "PP")} -{" "}
-                {format(publishedEvent.end, "PP")}
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Calendar />
-                Dates TBD
-              </div>
-            )}
-          </div>
-          <div className="flex justify-between p-2 border-t text-gray-500">
-            <button className="cursor-pointer">
-              <Heart />
-            </button>
-            <button className="cursor-pointer">
-              <Share2 />
-            </button>
-          </div>
+        <div className="mt-auto flex justify-between border-t border-slate-100 px-4 py-3 text-slate-500 dark:border-slate-800 dark:text-slate-400">
+          <button className="cursor-pointer rounded-md p-1 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white">
+            <Heart className="h-4 w-4" />
+          </button>
+          <button className="cursor-pointer rounded-md p-1 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white">
+            <Share2 className="h-4 w-4" />
+          </button>
         </div>
       </Card>
     </Link>

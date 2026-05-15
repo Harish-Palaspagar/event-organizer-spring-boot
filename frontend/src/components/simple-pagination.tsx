@@ -25,7 +25,7 @@ export function SimplePagination<T>({
         <ChevronLeft className="h-4 w-4" />
         <span className="sr-only">Previous Page</span>
       </Button>
-      <div className="text-sm">
+      <div className="text-sm text-slate-600 dark:text-slate-300">
         Page {currentPage + 1} of {totalPages}
       </div>
       <Button

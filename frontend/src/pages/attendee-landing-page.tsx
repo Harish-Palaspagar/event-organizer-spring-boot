@@ -1,6 +1,5 @@
 import { useAuth } from "react-oidc-context";
 import { Button } from "../components/ui/button";
-import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { AlertCircle, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,12 +8,10 @@ import { listPublishedEvents, searchPublishedEvents } from "@/lib/api";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import PublishedEventCard from "@/components/published-event-card";
 import { SimplePagination } from "@/components/simple-pagination";
+import PublicNavBar from "@/components/public-nav-bar";
 
 const AttendeeLandingPage: React.FC = () => {
-  const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
-    useAuth();
-
-  const navigate = useNavigate();
+  const { isLoading } = useAuth();
 
   const [page, setPage] = useState(0);
   const [publishedEvents, setPublishedEvents] = useState<
@@ -66,8 +63,8 @@ const AttendeeLandingPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Alert variant="destructive" className="bg-gray-900 border-red-700">
+      <div className="min-h-screen bg-background p-6 dark:bg-slate-950">
+        <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
@@ -77,51 +74,35 @@ const AttendeeLandingPage: React.FC = () => {
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p className="p-6 text-slate-600 dark:text-slate-300">Loading...</p>;
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      {/* Nav */}
-      <div className="flex justify-end p-4 container mx-auto">
-        {isAuthenticated ? (
-          <div className="flex gap-4">
-            <Button
-              onClick={() => navigate("/dashboard")}
-              className="cursor-pointer"
-            >
-              Dashboard
-            </Button>
-            <Button
-              className="cursor-pointer"
-              onClick={() => signoutRedirect()}
-            >
-              Log out
-            </Button>
-          </div>
-        ) : (
-          <div className="flex gap-4">
-            <Button className="cursor-pointer" onClick={() => signinRedirect()}>
-              Log in
-            </Button>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-background text-slate-950 dark:bg-slate-950 dark:text-slate-50">
+      <PublicNavBar />
       {/* Hero */}
-      <div className="container mx-auto px-4 mb-8">
-        <div className="bg-[url(/organizers-landing-hero.png)] bg-cover min-h-[200px] rounded-lg bg-bottom md:min-h-[250px]">
-          <div className="bg-black/45 min-h-[200px] md:min-h-[250px] p-15 md:p-20">
-            <h1 className="text-2xl font-bold mb-4">
+      <div className="container mx-auto mb-10 px-4 pt-6">
+        <div className="overflow-hidden rounded-lg bg-[url(/organizers-landing-hero.png)] bg-cover bg-bottom shadow-sm">
+          <div className="min-h-[280px] bg-slate-950/60 p-8 text-white md:p-14">
+            <div className="mb-4 inline-flex rounded-md border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              Curated live experiences
+            </div>
+            <h1 className="mb-5 max-w-2xl text-3xl font-bold tracking-tight md:text-5xl">
               Find Tickets to Your Next Event
             </h1>
-            <div className="flex gap-2 max-w-lg">
+            <div className="flex max-w-2xl flex-col gap-2 rounded-lg bg-white p-2 shadow-lg sm:flex-row dark:bg-slate-950">
               <Input
-                className="bg-white text-black"
+                className="h-11 border-0 bg-white text-slate-950 shadow-none focus-visible:ring-0 dark:bg-slate-950 dark:text-slate-50"
+                placeholder="Search by event name"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <Button onClick={queryPublishedEvents}>
+              <Button
+                className="h-11 cursor-pointer"
+                onClick={queryPublishedEvents}
+              >
                 <Search />
+                <span className="hidden sm:inline">Search</span>
               </Button>
             </div>
           </div>
@@ -129,13 +110,25 @@ const AttendeeLandingPage: React.FC = () => {
       </div>
 
       {/* Published Event Cards */}
-      <div className="grid grid-cols-2 gap-4 px-4 md:grid-cols-4">
-        {publishedEvents?.content?.map((publishedEvent) => (
-          <PublishedEventCard
-            publishedEvent={publishedEvent}
-            key={publishedEvent.id}
-          />
-        ))}
+      <div className="container mx-auto px-4">
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">
+              Upcoming Events
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Browse published events and choose your ticket.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {publishedEvents?.content?.map((publishedEvent) => (
+            <PublishedEventCard
+              publishedEvent={publishedEvent}
+              key={publishedEvent.id}
+            />
+          ))}
+        </div>
       </div>
 
       {publishedEvents && (

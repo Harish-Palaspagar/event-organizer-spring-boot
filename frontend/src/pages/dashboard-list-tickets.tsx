@@ -42,9 +42,9 @@ const DashboardListTickets: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-black min-h-screen text-white">
+      <div className="min-h-screen bg-background text-slate-950 dark:bg-slate-950 dark:text-slate-50">
         <NavBar />
-        <Alert variant="destructive" className="bg-gray-900 border-red-700">
+        <Alert variant="destructive" className="m-6">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
@@ -54,43 +54,50 @@ const DashboardListTickets: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="min-h-screen bg-background text-slate-950 dark:bg-slate-950 dark:text-slate-50">
       <NavBar />
 
       {/* Title */}
-      <div className="py-8 px-4">
-        <h1 className="text-2xl font-bold">Your Tickets</h1>
-        <p>Tickets you have purchased</p>
+      <div className="mx-auto max-w-4xl px-4 py-8">
+        <h1 className="text-3xl font-bold tracking-tight">Your Tickets</h1>
+        <p className="text-slate-600 dark:text-slate-400">
+          Tickets you have purchased
+        </p>
       </div>
 
-      <div className="max-w-lg mx-auto">
+      <div className="mx-auto max-w-4xl space-y-4 px-4">
         {tickets?.content.map((ticketItem) => (
           <Link to={`/dashboard/tickets/${ticketItem.id}`}>
-            <Card key={ticketItem.id} className="bg-gray-900 text-white">
+            <Card
+              key={ticketItem.id}
+              className="border-slate-200 bg-white text-slate-950 shadow-sm hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-50"
+            >
               <CardHeader>
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
-                    <Ticket className="h-5 w-5 text-gray-400" />
+                    <Ticket className="h-5 w-5 text-slate-400" />
                     <h3 className="font-bold text-xl">
                       {ticketItem.ticketType.name}
                     </h3>
                   </div>
-                  <span>{ticketItem.status}</span>
+                  <span className="rounded-md bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                    {ticketItem.status}
+                  </span>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Price */}
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-gray-400" />
+                  <DollarSign className="h-5 w-5 text-slate-400" />
                   <p className="font-medium">${ticketItem.ticketType.price}</p>
                 </div>
 
                 {/* Ticket ID */}
                 <div className="flex items-center gap-2">
-                  <Tag className="h-5 w-5 text-gray-400" />
+                  <Tag className="h-5 w-5 text-slate-400" />
                   <div>
                     <h4 className="font-medium">Ticket ID</h4>
-                    <p className="text-gray-400 font-mono text-sm">
+                    <p className="text-sm font-mono text-slate-500 dark:text-slate-400">
                       {ticketItem.id}
                     </p>
                   </div>
